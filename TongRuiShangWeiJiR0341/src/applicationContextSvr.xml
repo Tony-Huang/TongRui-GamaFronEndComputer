@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="configLocation"
+			value="classpath:hibernateSvr.cfg.xml">
+		</property>
+	</bean>
+        
+        <!-- txc manager-->
+       <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+         <property name="sessionFactory">
+          <ref local="sessionFactory" />
+         </property>
+       </bean>
+        
+        <!--    txc attributes-->
+         <bean id="baseTransactionProxy" abstract="true" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+           <property name="transactionManager">
+            <ref bean="transactionManager" />
+           </property>
+          <property name="transactionAttributes">
+             <props>
+                <prop key="save*">PROPAGATION_REQUIRED</prop>
+                <prop key="update*">PROPAGATION_REQUIRED</prop>
+                <prop key="delete*">PROPAGATION_REQUIRED</prop>
+                 <prop key="merge*">PROPAGATION_REQUIRED</prop>
+                <prop key="find*">PROPAGATION_REQUIRED,readOnly</prop>
+             </props>
+           </property>
+         </bean>
+
+        <bean id="TreatCourseDAO"
+		class="com.tongrui.shangweiji.data.server.TreatCourseDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="FractionDAO"
+		class="com.tongrui.shangweiji.data.server.FractionDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="SettingTypeDAO"
+		class="com.tongrui.shangweiji.data.server.SettingTypeDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="SysPlanDAO"
+		class="com.tongrui.shangweiji.data.server.SysPlanDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="PatientToPlanDAO"
+		class="com.tongrui.shangweiji.data.server.PatientToPlanDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="SysUserDAO"
+		class="com.tongrui.shangweiji.data.server.SysUserDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="CtDAO" class="com.tongrui.shangweiji.data.server.CtDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="PatientDAO"
+		class="com.tongrui.shangweiji.data.server.PatientDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="ContourTypeDAO"
+		class="com.tongrui.shangweiji.data.server.ContourTypeDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="PlanStateDAO"
+		class="com.tongrui.shangweiji.data.server.PlanStateDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="DensityDAO"
+		class="com.tongrui.shangweiji.data.server.DensityDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="PhyDataDAO"
+		class="com.tongrui.shangweiji.data.server.PhyDataDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="FocusDAO"
+		class="com.tongrui.shangweiji.data.server.FocusDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="SettingDAO"
+		class="com.tongrui.shangweiji.data.server.SettingDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="SysdiagramsDAO"
+		class="com.tongrui.shangweiji.data.server.SysdiagramsDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="SgmaintainDAO"
+		class="com.tongrui.shangweiji.data.server.SgmaintainDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="ContourDAO"
+		class="com.tongrui.shangweiji.data.server.ContourDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="SourceDAO"
+		class="com.tongrui.shangweiji.data.server.SourceDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="PatientToTreatDAO"
+		class="com.tongrui.shangweiji.data.server.PatientToTreatDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="PdmaintainDAO"
+		class="com.tongrui.shangweiji.data.server.PdmaintainDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="FractionStateDAO"
+		class="com.tongrui.shangweiji.data.server.FractionStateDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="UnitDAO"
+		class="com.tongrui.shangweiji.data.server.UnitDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="SettingGroupDAO"
+		class="com.tongrui.shangweiji.data.server.SettingGroupDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="ContourLibDAO"
+		class="com.tongrui.shangweiji.data.server.ContourLibDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="UserGroupDAO"
+		class="com.tongrui.shangweiji.data.server.UserGroupDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="CollTypeDAO"
+		class="com.tongrui.shangweiji.data.server.CollTypeDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="UnitMaintainDAO"
+		class="com.tongrui.shangweiji.data.server.UnitMaintainDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="StudyDAO"
+		class="com.tongrui.shangweiji.data.server.StudyDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+        
+        <!-- Service -->
+         <bean id="SvrPatientService" parent="baseTransactionProxy">
+          <property name="target">
+           <bean class="com.tongrui.shangweiji.biz.server.SvrPatientSvcImpl">
+             <property name="fractionDAO"> 
+               <ref bean="FractionDAO"/>
+             </property>
+           </bean>
+          </property>
+         </bean>
+        
+</beans>

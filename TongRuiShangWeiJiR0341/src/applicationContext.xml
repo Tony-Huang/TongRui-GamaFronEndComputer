@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+    xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"  
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd" xmlns:aop="http://www.springframework.org/schema/aop"
+>
+
+       <!--added by Tony-->
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+            <property name="location">
+                <value>file:localjdbc.properties</value>
+            </property>
+    </bean>
+    <!-- class="org.springframework.jdbc.datasource.DriverManagerDataSource"  -->
+    <bean id="dataSource" class="common.MyCustomDriverManagerDataSource">    
+        <property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />  
+        <property  name="url" value="${jdbc.url}" />    
+        <property name="username" value="${jdbc.username}" />    
+        <property name="password" value="${jdbc.password}" />    
+    </bean>    
+       
+
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />    
+        <property name="mappingResources">    
+            <list>    
+                <value> com/tongrui/shangweiji/data/CatSystemLogLevel.hbm.xml </value> 
+                <value> com/tongrui/shangweiji/data/CatDeviceparamValueHistory.hbm.xml   </value> 
+                <value> com/tongrui/shangweiji/data/CatDeviceparamType.hbm.xml    </value> 
+                <value> com/tongrui/shangweiji/data/CatAccRole.hbm.xml   </value> 
+                <value> com/tongrui/shangweiji/data/CatAccUser.hbm.xml   </value>
+                <value> com/tongrui/shangweiji/data/CatDeviceparamValue.hbm.xml   </value>
+                <value> com/tongrui/shangweiji/data/CatSystemLog.hbm.xml   </value> 
+                <value> com/tongrui/shangweiji/data/CatTreatmentFractionState.hbm.xml   </value>  
+                <value> com/tongrui/shangweiji/data/CatTreatmentPatientCase.hbm.xml   </value>  
+                <value> com/tongrui/shangweiji/data/CatTreatmentPlan.hbm.xml   </value>
+                <value> com/tongrui/shangweiji/data/CatTreatmentPlanFocus.hbm.xml   </value>
+                <value> com/tongrui/shangweiji/data/CatTreatmentPlanFraction.hbm.xml   </value>
+                <value> com/tongrui/shangweiji/data/CatTreatmentPlanState.hbm.xml   </value>
+                <value> com/tongrui/shangweiji/data/CatTreatmentCollType.hbm.xml   </value>  
+            </list>    
+        </property>  
+        
+        <property name="hibernateProperties">    
+            <props>    
+                <prop key="hibernate.dialect">org.hibernate.dialect.SQLServerDialect </prop>    
+                <!--prop key="hibernate.show_sql">true </prop>    
+                <prop key="hibernate.format_sql">true</prop-->    
+            </props>    
+        </property>    
+                
+                <!--property name="configLocation"
+			value="file:src/hibernate.cfg.xml"-->
+    </bean>
+        
+        <!-- txc manager-->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory">
+            <ref local="sessionFactory" />
+        </property>
+    </bean>
+        
+        <!--    txc attributes-->
+    <bean id="baseTransactionProxy" abstract="true" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager">
+            <ref bean="transactionManager" />
+        </property>
+        <property name="transactionAttributes">
+            <props>
+                <prop key="save*">PROPAGATION_REQUIRED</prop>
+                <prop key="update*">PROPAGATION_REQUIRED</prop>
+                <prop key="delete*">PROPAGATION_REQUIRED</prop>
+                <prop key="merge*">PROPAGATION_REQUIRED</prop>
+                <prop key="find*">PROPAGATION_REQUIRED,readOnly</prop>
+            </props>
+        </property>
+    </bean>
+
+
+        <!-- DAO are as following -->        
+    <bean id="CatSystemLogLevelDAO"
+          class="com.tongrui.shangweiji.data.CatSystemLogLevelDAO">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    <bean id="CatDeviceparamValueHistoryDAO"
+          class="com.tongrui.shangweiji.data.CatDeviceparamValueHistoryDAO">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    <bean id="CatDeviceparamTypeDAO"
+          class="com.tongrui.shangweiji.data.CatDeviceparamTypeDAO">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    <bean id="CatAccRoleDAO"
+          class="com.tongrui.shangweiji.data.CatAccRoleDAO">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    <bean id="CatAccUserDAO"
+          class="com.tongrui.shangweiji.data.CatAccUserDAO">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    <bean id="CatDeviceparamValueDAO"
+          class="com.tongrui.shangweiji.data.CatDeviceparamValueDAO">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    <bean id="SystemLogDAO"
+          class="com.tongrui.shangweiji.data.CatSystemLogDAO">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+        
+    <bean id="PatientDAO"
+          class="com.tongrui.shangweiji.data.CatTreatmentPatientCaseDAO">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+        
+    <bean id="PlanDAO"
+          class="com.tongrui.shangweiji.data.CatTreatmentPlanDAO">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+        
+    <bean id="PlanFractionDAO"
+          class="com.tongrui.shangweiji.data.CatTreatmentPlanFractionDAO">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+        
+    <bean id="FracStateDAO"
+          class="com.tongrui.shangweiji.data.CatTreatmentFractionStateDAO">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+
+    <bean id="CollTypeDAO"
+          class="com.tongrui.shangweiji.data.CatTreatmentCollTypeDAO">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+        
+        <!--services-->
+        
+    <bean id="RoleService" parent="baseTransactionProxy">
+        <property name="target">
+            <bean class="com.tongrui.shangweiji.biz.RoleSvcImpl">
+                <property name="roleDAO">
+                    <ref bean="CatAccRoleDAO"/>
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="UserService" parent="baseTransactionProxy">
+        <property name="target">
+            <bean class="com.tongrui.shangweiji.biz.UserSvcImpl">
+                <property name="userDAO">
+                    <ref bean="CatAccUserDAO"/>
+                </property>
+            </bean>
+        </property>
+    </bean>
+         
+         <!-- Parameter service -->
+    <bean id="ParameterService" parent="baseTransactionProxy">
+        <property name="target">
+            <bean class="com.tongrui.shangweiji.biz.ParameterSvcImpl">
+                <property name="paramValueDAO">
+                    <ref bean="CatDeviceparamValueDAO"/>
+                </property>
+            </bean>
+        </property>
+    </bean>
+         
+         <!-- ParameterHistory service -->
+    <bean id="ParamHistoryService" parent="baseTransactionProxy">
+        <property name="target">
+            <bean class="com.tongrui.shangweiji.biz.ParamHistorySvcImpl">
+                <property name="paramValueHistoryDAO">
+                    <ref bean="CatDeviceparamValueHistoryDAO"/>
+                </property>
+            </bean>
+        </property>
+    </bean>
+         
+         <!-- Patient service -->
+    <bean id="PatientService" parent="baseTransactionProxy">
+        <property name="target">
+            <bean class="com.tongrui.shangweiji.biz.PatientSvcImpl">
+                <property name="patientDAO">
+                    <ref bean="PatientDAO"/>
+                </property>
+            </bean>
+        </property>
+    </bean>
+         
+          <!-- TreatmentPlan service -->
+    <bean id="TreatmentPlanService" parent="baseTransactionProxy">
+        <property name="target">
+            <bean class="com.tongrui.shangweiji.biz.TreatmentPlanSvcImpl">
+                <property name="planDAO">
+                    <ref bean="PlanDAO"/>
+                </property>
+                <property name="planFractionDAO">
+                    <ref bean="PlanFractionDAO"/>
+                </property>
+            </bean>
+        </property>
+    </bean>
+         
+         <!-- FractionStateService  -->
+    <bean id="FractionStateService" parent="baseTransactionProxy">
+        <property name="target">
+            <bean class="com.tongrui.shangweiji.biz.FractionStateSvcImpl">
+                <property name="fracStateDAO">
+                    <ref bean="FracStateDAO"/>
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="ParameterTypeService" parent="baseTransactionProxy">
+        <property name="target">
+            <bean class="com.tongrui.shangweiji.biz.ParameterTypeSvcImpl">
+                <property name="paramTypeDAO">
+                    <ref bean="CatDeviceparamTypeDAO"/>
+                </property>
+            </bean>
+        </property>
+    </bean>
+        
+         <!-- CollTypeService  -->
+    <bean id="CollTypeService" parent="baseTransactionProxy">
+        <property name="target">
+            <bean class="com.tongrui.shangweiji.biz.CollTypeSvcImpl">
+                <property name="collTypeDAO">
+                    <ref bean="CollTypeDAO"/>
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+         <!-- SystemLogService  -->
+    <bean id="SystemLogService" parent="baseTransactionProxy">
+        <property name="target">
+            <bean class="com.tongrui.shangweiji.biz.SystemLogSvcImpl">
+                <property name="systemLogDAO">
+                    <ref bean="SystemLogDAO"/>
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+         <!--bean id="dataSender" class="com.tongrui.shangweiji.comm.DataSender">
+         </bean-->
+
+</beans>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="configLocation"
+			value="classpath:hibernateTmp.cfg.xml">
+		</property>
+	</bean>
+        
+        <!-- txc manager-->
+       <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+         <property name="sessionFactory">
+          <ref local="sessionFactory" />
+         </property>
+       </bean>
+        
+        <!--    txc attributes-->
+         <bean id="baseTransactionProxy" abstract="true" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+           <property name="transactionManager">
+            <ref bean="transactionManager" />
+           </property>
+          <property name="transactionAttributes">
+             <props>
+                <prop key="save*">PROPAGATION_REQUIRED</prop>
+                <prop key="update*">PROPAGATION_REQUIRED</prop>
+                <prop key="delete*">PROPAGATION_REQUIRED</prop>
+                 <prop key="merge*">PROPAGATION_REQUIRED</prop>
+                <prop key="find*">PROPAGATION_REQUIRED,readOnly</prop>
+             </props>
+           </property>
+         </bean>
+         
+         <bean id="TmpTreatmentPlanFocusDAO"
+		class="com.tongrui.shangweiji.data.server.TmpTreatmentPlanFocusDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="TmpTreatmentCollTypeDAO"
+		class="com.tongrui.shangweiji.data.server.TmpTreatmentCollTypeDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="TmpTreatmentPlanStateDAO"
+		class="com.tongrui.shangweiji.data.server.TmpTreatmentPlanStateDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="TmpTreatmentPlanFractionDAO"
+		class="com.tongrui.shangweiji.data.server.TmpTreatmentPlanFractionDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="TmpTreatmentFractionStateDAO"
+		class="com.tongrui.shangweiji.data.server.TmpTreatmentFractionStateDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="TmpTreatmentPlanDAO"
+		class="com.tongrui.shangweiji.data.server.TmpTreatmentPlanDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="TmpTreatmentPatientCaseDAO"
+		class="com.tongrui.shangweiji.data.server.TmpTreatmentPatientCaseDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	
+	<!-- Service -->
+         <bean id="TmpPatientService" parent="baseTransactionProxy">
+          <property name="target">
+           <bean class="com.tongrui.shangweiji.biz.server.TmpPatientSvcImpl">
+             <property name="tmpTreatmentPatientCaseDAO"> 
+               <ref bean="TmpTreatmentPatientCaseDAO"/>
+             </property>
+           </bean>
+          </property>
+         </bean>
+
+	</beans>

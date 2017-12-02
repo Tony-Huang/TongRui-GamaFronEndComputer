@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="1.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+  <persistence-unit name="localhost\SQLEXPRESS:1433;databaseName=ShangWeiJi" transaction-type="RESOURCE_LOCAL">
+    <provider>oracle.toplink.essentials.PersistenceProvider</provider>
+    <class>com.tongrui.shangweiji.ui.CATACCUser</class>
+    <properties>
+      <property name="toplink.jdbc.user" value="test"/>
+      <property name="toplink.jdbc.password" value="test"/>
+      <property name="toplink.jdbc.url" value="jdbc:sqlserver://localhost\SQLEXPRESS:1433;databaseName=ShangWeiJi"/>
+      <property name="toplink.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+    </properties>
+  </persistence-unit>
+</persistence>

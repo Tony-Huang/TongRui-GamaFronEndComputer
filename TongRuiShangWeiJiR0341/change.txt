@@ -1,0 +1,24 @@
+------------数据库用户表以及配置文件密码加密方案------------
+
+add : MyCustomDriverManagerDataSource,
+      EncryptUtil
+      commons-codec-1.8.jar
+
+change: 1）applicationContext.xml      
+   将原来的 <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">  
+   改为：
+      <bean id="dataSource" class="common.MyCustomDriverManagerDataSource"> 
+
+       2） DBSetting ，line of 314,320,331,334 
+
+-----将预先埋入的用户密码更新为加密值，对应原始密码是AW----
+UPDATE CAT_ACC_User
+   SET 
+      Password ='1E5342B2DE8F485D2CC77947A6154B3F'   ---encryption password of AW
+      ,Active = 1
+ WHERE username ='AW'
+
+
+      3）PasswordReset ,line 160  （加密用户新密码）
+
+      4）Login ， line 261, 267,274

@@ -1,0 +1,199 @@
+package com.tongrui.shangweiji.data;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hibernate.LockMode;
+import org.springframework.context.ApplicationContext;
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+
+/**
+ * A data access object (DAO) providing persistence and search support for
+ * CatDeviceparamValue entities. Transaction control of the save(), update() and
+ * delete() operations can directly support Spring container-managed
+ * transactions or they can be augmented to handle user-managed Spring
+ * transactions. Each of these methods provides additional information for how
+ * to configure it for the desired type of transaction control.
+ * 
+ * @see com.tongrui.shangweiji.data.CatDeviceparamValue
+ * @author MyEclipse Persistence Tools
+ */
+
+public class CatDeviceparamValueDAO extends HibernateDaoSupport {
+	private static final Log log = LogFactory
+			.getLog(CatDeviceparamValueDAO.class);
+	// property constants
+	public static final String USED = "used";
+	public static final String NAME = "name";
+	public static final String POSITION = "position";
+	public static final String VALUE = "value";
+	public static final String VALUE2 = "value2";
+	public static final String UPLIMIT = "uplimit";
+	public static final String LOWLIMIT = "lowlimit";
+	public static final String CREATED_BY = "createdBy";
+	public static final String MODIFIED_BY = "modifiedBy";
+
+	protected void initDao() {
+		// do nothing
+	}
+
+	public void save(CatDeviceparamValue transientInstance) {
+		log.debug("saving CatDeviceparamValue instance");
+		try {
+			getHibernateTemplate().save(transientInstance);
+			log.debug("save successful");
+		} catch (RuntimeException re) {
+			log.error("save failed", re);
+			throw re;
+		}
+	}
+
+	public void delete(CatDeviceparamValue persistentInstance) {
+		log.debug("deleting CatDeviceparamValue instance");
+		try {
+			getHibernateTemplate().delete(persistentInstance);
+			log.debug("delete successful");
+		} catch (RuntimeException re) {
+			log.error("delete failed", re);
+			throw re;
+		}
+	}
+
+	public CatDeviceparamValue findById(java.lang.Integer id) {
+		log.debug("getting CatDeviceparamValue instance with id: " + id);
+		try {
+			CatDeviceparamValue instance = (CatDeviceparamValue) getHibernateTemplate()
+					.get("com.tongrui.shangweiji.data.CatDeviceparamValue", id);
+			return instance;
+		} catch (RuntimeException re) {
+			log.error("get failed", re);
+			throw re;
+		}
+	}
+
+	public List findByExample(CatDeviceparamValue instance) {
+		log.debug("finding CatDeviceparamValue instance by example");
+		try {
+			List results = getHibernateTemplate().findByExample(instance);
+			log.debug("find by example successful, result size: "
+					+ results.size());
+			return results;
+		} catch (RuntimeException re) {
+			log.error("find by example failed", re);
+			throw re;
+		}
+	}
+
+	public List findByProperty(String propertyName, Object value) {
+		log.debug("finding CatDeviceparamValue instance with property: "
+				+ propertyName + ", value: " + value);
+		try {
+			String queryString = "from CatDeviceparamValue as model where model."
+					+ propertyName + "= ?";
+			return getHibernateTemplate().find(queryString, value);
+		} catch (RuntimeException re) {
+			log.error("find by property name failed", re);
+			throw re;
+		}
+	}
+
+	public List findByUsed(Object used) {
+		return findByProperty(USED, used);
+	}
+
+	public List findByName(Object name) {
+		return findByProperty(NAME, name);
+	}
+
+	public List findByPosition(Object position) {
+		return findByProperty(POSITION, position);
+	}
+
+	public List findByValue(Object value) {
+		return findByProperty(VALUE, value);
+	}
+
+	public List findByValue2(Object value2) {
+		return findByProperty(VALUE2, value2);
+	}
+
+	public List findByUplimit(Object uplimit) {
+		return findByProperty(UPLIMIT, uplimit);
+	}
+
+	public List findByLowlimit(Object lowlimit) {
+		return findByProperty(LOWLIMIT, lowlimit);
+	}
+
+	public List findByCreatedBy(Object createdBy) {
+		return findByProperty(CREATED_BY, createdBy);
+	}
+
+	public List findByModifiedBy(Object modifiedBy) {
+		return findByProperty(MODIFIED_BY, modifiedBy);
+	}
+        
+        
+        public List findByTypeName(String paramTypeName){
+        try {
+			String queryString = "from CatDeviceparamValue value where value.catDeviceparamType.name= '"+paramTypeName +"'";
+			return getHibernateTemplate().find(queryString);
+		} catch (RuntimeException re) {
+			log.error("find all failed", re);
+			throw re;
+		}
+        }
+
+	public List findAll() {
+		log.debug("finding all CatDeviceparamValue instances");
+		try {
+			String queryString = "from CatDeviceparamValue";
+			return getHibernateTemplate().find(queryString);
+		} catch (RuntimeException re) {
+			log.error("find all failed", re);
+			throw re;
+		}
+	}
+
+	public CatDeviceparamValue merge(CatDeviceparamValue detachedInstance) {
+		log.debug("merging CatDeviceparamValue instance");
+		try {
+			CatDeviceparamValue result = (CatDeviceparamValue) getHibernateTemplate()
+					.merge(detachedInstance);
+			log.debug("merge successful");
+			return result;
+		} catch (RuntimeException re) {
+			log.error("merge failed", re);
+			throw re;
+		}
+	}
+
+	public void attachDirty(CatDeviceparamValue instance) {
+		log.debug("attaching dirty CatDeviceparamValue instance");
+		try {
+			getHibernateTemplate().saveOrUpdate(instance);
+			log.debug("attach successful");
+		} catch (RuntimeException re) {
+			log.error("attach failed", re);
+			throw re;
+		}
+	}
+
+	public void attachClean(CatDeviceparamValue instance) {
+		log.debug("attaching clean CatDeviceparamValue instance");
+		try {
+			getHibernateTemplate().lock(instance, LockMode.NONE);
+			log.debug("attach successful");
+		} catch (RuntimeException re) {
+			log.error("attach failed", re);
+			throw re;
+		}
+	}
+
+	public static CatDeviceparamValueDAO getFromApplicationContext(
+			ApplicationContext ctx) {
+		return (CatDeviceparamValueDAO) ctx.getBean("CatDeviceparamValueDAO");
+	}
+}
